@@ -15,5 +15,3 @@
 ## Comandos
 
 - yarn install && cd ios && pod install && cd .. && yarn ios
-
-### Sobrou tempo?
