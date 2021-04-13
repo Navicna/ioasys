@@ -16,7 +16,7 @@
 
 - yarn install && cd ios && pod install && cd .. && yarn ios
 
-## Playgroud
+## Playground
 ![image](https://user-images.githubusercontent.com/52223211/114494869-75c2f000-9bf3-11eb-93e0-11c7e91e8d22.png)
 
 ![image](https://user-images.githubusercontent.com/52223211/114494934-968b4580-9bf3-11eb-80f0-91a7b45146ee.png)
