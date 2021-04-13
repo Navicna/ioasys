@@ -1,16 +1,8 @@
-![N|Solid](logo_ioasys.png)
-
-# Desafio React Native - ioasys
-
-Este documento `README.md` tem como objetivo fornecer as informações necessárias para realização do projeto Empresas.
-
----
-
 ## Infos Gerais
 
 - O YARN se apresentou superior ao NPM na instalação dos pacotes
 - CocoaPods (brew install cocoapods)
-- O aplicativo foi testado somento em dispositivo IOS
+- O aplicativo foi testado somente em dispositivo IOS
 
 ## Tecnologia
 
