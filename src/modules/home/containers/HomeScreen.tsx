@@ -1,37 +1,63 @@
+import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { Colors } from '../../../constants/Colors';
-import { enterprises } from '../../../utils/provisory';
-import TopBar from '../../bar/TopBar';
+import { View, FlatList } from 'react-native';
+import { Images } from '../../../constants/Images';
 import CardEnterprises from '../components/CardEnterprises/CardEnterprises';
 import { enterprisesType } from '../utils/home.utils';
 import * as HS from './HomeScreen.styles'
+import TopBar from '../../bar/containers/TopBar';
+import * as Animatable from 'react-native-animatable';
+import { useEnterprises } from '../../../services/data';
+import { API_URL } from '../../../services/auth';
+import { IEnterPriseProps } from '../../../utils/interfaces';
 
 export default function HomeScreen() {
+  const { navigate } = useNavigation();
 
-    console.log(enterprises.map(x => x.enterprise_type.enterprise_type_name).sort())
+  const { enterprises, getEnterprisesData, loadingEnterprises } = useEnterprises();
+
+  React.useEffect(()=> {
+    if(!enterprises){
+      getEnterprisesData();
+    }
+  },[]);
+
+  if(!enterprises) return null;
+
+  console.log(enterprises);
+  // console.log(enterprises.map(x => x.enterprise_type.enterprise_type_name).sort());
 
   return (
+    <>
       <TopBar>
         <HS.HomeContainer>
-          {enterprisesType.map((type: string) => 
-          <View>
-            <Text style={{ fontSize: 18, color: Colors.pink }}>
-              {type}
-            </Text>
-            <FlatList 
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={enterprises.filter(y => type === y.enterprise_type.enterprise_type_name)}
-              renderItem={({ item, index }) => (
-                <View style={{ marginRight: 16 }}>
-                  <CardEnterprises name={item.enterprise_name} key={index} source={{ uri: `https://empresas.ioasys.com.br${item.photo}` }} />
-                </View>
-              )}
-              />
-          </View>
+          <HS.HomeBanner source={Images.banner}/>
+        {enterprises && <HS.Wrapper>
+          {enterprisesType.map((type: string, i) => 
+          <Animatable.View animation="fadeInUp" duration={1200 + i * 200}>
+            <HS.CardSectionWrapper  key={i}>
+              <HS.CardSectionTitle>
+                {type}
+              </HS.CardSectionTitle>
+                <FlatList 
+                  horizontal
+                  contentContainerStyle={HS.styles.flatlist}
+                  showsHorizontalScrollIndicator={false}
+                  data={enterprises.filter((item: IEnterPriseProps) => type === item.enterprise_type.enterprise_type_name)}
+                  renderItem={({ item }: any): JSX.Element => (
+                    <View style={{ marginRight: 20 }}>
+                      <CardEnterprises name={item.enterprise_name} source={{ uri: `${API_URL}${item.photo}` }} onPress={() => navigate('Details', { enterprise: item })} />
+                    </View>
+                  )}
+                  pagingEnabled              
+                  keyExtractor={(item: any, i) => item.id}
+                  />               
+            </HS.CardSectionWrapper>
+          </Animatable.View>
           )}
-        </HS.HomeContainer>
-      </TopBar>    
+          </HS.Wrapper>}
+        </HS.HomeContainer>       
+      </TopBar>         
+      </>
   );
 }
